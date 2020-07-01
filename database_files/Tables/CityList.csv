@@ -1,0 +1,41 @@
+cityID,cityName,cityState,cityCountry
+1,Alexandria                    ,NSW,Australia
+2,Bendigo                       ,VIC,Australia
+3,Brisbane                      ,QLD,Australia
+4,Caloundra                     ,QLD,Australia
+5,Cloverdale                    ,SA,Australia
+6,Coffs Harbour                 ,NSW,Australia
+7,Cranbourne                    ,VIC,Australia
+8,Darlinghurst                  ,NSW,Australia
+9,East Brisbane                 ,QLD,Australia
+10,Findon                        ,SA,Australia
+11,Geelong                       ,VIC,Australia
+12,Gold Coast                    ,QLD,Australia
+13,Goulburn                      ,NSW,Australia
+14,Hawthorne                     ,QLD,Australia
+15,Hervey Bay                    ,QLD,Australia
+16,Hobart                        ,TAS,Australia
+17,Lane Cove                     ,NSW,Australia
+18,Lavender Bay                  ,NSW,Australia
+19,Malabar                       ,NSW,Australia
+20,Matraville                    ,NSW,Australia
+21,Melbourne                     ,VIC,Australia
+22,Melton                        ,VIC,Australia
+23,Milsons Point                 ,NSW,Australia
+24,Newcastle                     ,NSW,Australia
+25,North Ryde                    ,NSW,Australia
+26,North Sydney                  ,NSW,Australia
+27,Perth                         ,SA,Australia
+28,Port Macquarie                ,NSW,Australia
+29,Rhodes                        ,NSW,Australia
+30,Rockhampton                   ,QLD,Australia
+31,Seaford                       ,VIC,Australia
+32,Silverwater                   ,NSW,Australia
+33,South Melbourne               ,VIC,Australia
+34,Springwood                    ,NSW,Australia
+35,St. Leonards                  ,NSW,Australia
+36,Sunbury                       ,VIC,Australia
+37,Sydney                        ,NSW,Australia
+38,Townsville                    ,QLD,Australia
+39,Warrnambool                   ,VIC,Australia
+40,Wollongong                    ,NSW,Australia

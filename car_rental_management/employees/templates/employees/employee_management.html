@@ -1,0 +1,202 @@
+<style>
+.font_01 { font-size:21px;}
+</style>
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% load staticfiles %}
+{% block body %}
+<script src="{% static 'js/advance_search.js' %}"></script>
+<script>
+	function create_new_condition() {
+		if (condition_counter < 5) {
+			document.getElementById("btn_advance").disabled = false;
+			var condition_format = [
+				'<div class="form-group" style="padding: 5px;">',
+				'<select class="form-control" name=' + advance_condition_names[condition_counter] + '>',
+				  '<option value="employeefirstname" selected>employee firstname</option>',
+				  '<option value="employeelastname">employee lastname</option>',
+				  <!-- '<option value="employeedob">employee dob</option>', -->
+				  '<option value="employeeaddress">employee address</option>',
+				  '<option value="employeeemail">employee email</option>',
+				  '<option value="employeephonenumber">employee phonenumber</option>',
+				  '<option value="cityname">employee city name</option>',
+				  '<option value="citystate">employee city state</option>',
+				'</select>',
+				'&nbsp;<input class="form-control" type="text" placeholder="Put your condition here" name=' + advance_condition_values[condition_counter] + '>&nbsp;',
+				'<select class="form-control" name=' + advance_connection[condition_counter] + '>',
+				  '<option value="And" selected>And</option>',
+				  '<option value="Or">Or</option>',
+				'</select>',
+				'</div><br>'
+			];
+	
+			var html_string = condition_format.join('');
+			
+			var fragment = create(html_string);
+			var parent = document.getElementById("div_advance");
+			parent.appendChild(fragment);
+			condition_counter++;
+		}
+	};
+	
+	$(function () {
+		$('#start_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+		$('#end_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+	});
+	
+</script>
+
+{% if request.session.user_access_level > 4 %}
+<center>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+<form class="navbar-form navbar-left" role="search" method="post" action="/employees/emp_man" style="width: 100%;">
+{% csrf_token %}
+				<div id="basic_general" class="form-group">
+					<input type="text" class="form-control" name="search_condition" placeholder="Search all if no conditions">
+					<button type="submit" class="save btn btn-default" name="general_search">Search</button>
+				</div>
+				
+				<label id="label_date" style="display: none;">Employee Date of Birth</label>
+				<div id="date_group" class="form-group" style="width:400px; margin-bottom: 10px; display: none; ">
+					Start Date
+					<div class='input-group date' id='start_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="start_date"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+					End Date
+					<div class='input-group date' id='end_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="end_date"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+				</div>
+				
+				<div style="padding-top: 10px; padding-bottom: 5px;" id="div_order">
+					<select class="form-control" name="order_category">
+						<option value="employeeid" selected>employee id</option>
+						<option value="employeefirstname">employee firstname</option>
+						<option value="employeelastname">employee lastname</option>
+						<option value="employeedob">employee dob</option>
+						<option value="employeeaddress">employee address</option>
+						<option value="employeeemail">employee email</option>
+						<option value="employeephonenumber">employee phonenumber</option>
+						<option value="cityname">employee city name</option>
+						<option value="citystate">employee city state</option>
+					</select>
+					
+					<select class="form-control" name="order_type">
+						<option value="ascending" selected>ascending</option>
+						<option value="descending">descending</option>
+					</select>
+					
+					<button class="save btn btn-default" type="submit" name="btn_order">Reorder</button>
+					
+				</div>
+				
+				<div id="div_advance" class="form-group" style="width: 100%; display: none;">
+                </div>
+				<button id="btn_advance" type="submit" class="save btn btn-default" name="advance_search" style="display: none;">Search</button>           				
+</form>
+<div style="width: 100%;">
+	<div style="margin-left: 15px;">
+		<button id="btn_new_condition" class="btn btn-secondary" onclick="create_new_condition()" style="display: none; float: none;">Create New Condition</button>
+		<button id="btn_clear" class="btn btn-danger" onclick="remove_conditions()" style="display: none; float: none; margin-top: 5px; margin-bottom: 5px;">Clear All Conditions</button>
+	</div>
+	<button class="btn btn-secondary" onclick="hideGeneralSearch();" style="margin-left: 15px;">Switch Search Method</button>
+</div>
+</center>
+
+
+<div style="width: 100%;">
+	{% if employees %}
+		<!-- <div class="container"> -->
+			<h3 style="margin-left: 5px;">Employee</h3>
+		<!-- </div> -->
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th scope="col">employee id</th>
+					<th scope="col">employee firstname</th>
+					<th scope="col">employee lastname</th>
+					<th scope="col">employee dob</th>
+					<th scope="col">employee address</th>
+					<th scope="col">employee city</th>
+					<th scope="col">employee state</th>
+					<th scope="col">employee email</th>
+					<th scope="col">employee phonenumber</th>
+				</tr>
+			</thead>
+			<tbody>
+		{% for employee in employees%}
+				<tr>
+					<td>{{employee.employeeid}}</td>
+					<td>{{employee.employeefirstname}}</td>
+					<td>{{employee.employeelastname}}</td>
+					<td>{{employee.employeedob}}</td>
+					<td>{{employee.employeeaddress}}</td>
+					<td>{{employee.employeecityid.cityname}}</td>
+					<td>{{employee.employeecityid.citystate}}</td>
+					<td>{{employee.employeeemail}}</td>
+					<td>{{employee.employeephonenumber}}</td>
+				</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="pagination">
+			<span class="step-links pagination">
+				{% if employees.has_previous %}
+					<a href="?employees=1&customers={{ customers.number }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}">&laquo; first</a>
+					<a href="?employees={{ employees.previous_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}">previous</a>
+				{% endif %}
+
+				<span class="current">
+					Page {{ employees.number }} of {{ employees.paginator.num_pages }}.
+				</span>
+
+				{% if employees.has_next %}
+					<a href="?employees={{ employees.next_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}">next</a>
+					<a href="?employees={{ employees.paginator.num_pages }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}">last &raquo;</a>
+				{% endif %}
+			</span>
+		</div>
+	{% else %}
+	No Data Has Found
+	{% endif %}
+	<br><br>
+	<a href="/employees/register" class="font_01">Register New Employee</a>
+{%elif msg%}
+{{msg}}
+{% else %}
+	<h3 style="margin-left: 5px;">Access Rejection</h3>
+{% endif %}
+</div>
+{% endblock %}
+

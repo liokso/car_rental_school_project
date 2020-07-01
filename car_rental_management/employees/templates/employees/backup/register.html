@@ -1,0 +1,14 @@
+{% extends 'employees/base.html' %}
+{% block title %}Login{% endblock %}
+{% load static %}
+{% block body %}
+<center>
+	<h1>User Register</h1>
+	<form method="POST" class="post-form" >
+        <div style="width:100%;align:center"></div>
+      {% csrf_token %}
+	{{form.as_p}}
+	<button type="submit" class="save btn btn-default">Register</button>
+    </form>
+</center>
+{% endblock %}

@@ -1,0 +1,4 @@
+employeeID,employeeFirstName,employeeLastName ,employeeDOB,employeeAddress,employeeCityID,employeeEmail,employeePhoneNumber,roleID ,employeeUsername,employeePassword
+1,Nick,Elodeon,1977-12-1,12 Avatar St,3,nick@elodeon.au,55555555,1,nick_e,12
+2,Bob,Afett,1995-8-8,32 Mandalore St,37,bob@afett.mandalore,55555555,2,bob_a,34
+3,Sky,Walker,1990-4-15,9 Tatooine St,3,sky@walker.tatooine,55555555,2,sky_w,56

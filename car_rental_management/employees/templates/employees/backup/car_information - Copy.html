@@ -1,0 +1,80 @@
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<form class="navbar-form navbar-left" role="search" method="post" action="">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search_condition">
+                </div>
+				{% csrf_token %}
+                <button type="submit" class="save btn btn-default">Search</button>
+</form>
+{% if cars %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Car</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">vehicle id</th>
+				<th scope="col">makename</th>
+				<th scope="col">model</th>
+				<th scope="col">series</th>
+				<th scope="col">seriesyear</th>
+				<th scope="col">pricenew</th>
+				<th scope="col">enginesize</th>
+				<th scope="col">fuelsystem</th>
+				<th scope="col">tankcapacity</th>
+				<th scope="col">power</th>
+				<th scope="col">seatingcapacity</th>
+				<th scope="col">standardtransmission</th>
+				<th scope="col">bodytype</th>
+				<th scope="col">wheeldrive</th>
+				<th scope="col">wheelbase</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for car in cars%}
+			<tr>
+				<td>{{car.vehicleid}}</td>
+				<td>{{car.makename}}</td>
+				<td>{{car.model}}</td>
+				<td>{{car.series}}</td>
+				<td>{{car.seriesyear}}</td>
+				<td>{{car.pricenew}}</td>
+				<td>{{car.enginesize}}</td>
+				<td>{{car.fuelsystem}}</td>
+				<td>{{car.tankcapacity}}</td>
+				<td>{{car.power}}</td>
+				<td>{{car.seatingcapacity}}</td>
+				<td>{{car.standardtransmission}}</td>
+				<td>{{car.bodytype}}</td>
+				<td>{{car.wheeldrive}}</td>
+				<td>{{car.wheelbase}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if cars.has_previous %}
+				<a href="?cars=1&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?cars={{ cars.previous_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ cars.number }} of {{ cars.paginator.num_pages }}.
+			</span>
+
+			{% if cars.has_next %}
+				<a href="?cars={{ cars.next_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">next</a>
+				<a href="?cars={{ cars.paginator.num_pages }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+{% else %}
+No Data Has Found
+{% endif %}
+
+{% endblock %}

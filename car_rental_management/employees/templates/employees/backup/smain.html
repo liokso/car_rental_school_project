@@ -1,0 +1,85 @@
+
+	{% load static %}
+	<head>
+		<link rel = "stylesheet" type = "text/css" href="{% static 'employees/main_page.css' %}"/>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript">			
+			jQuery(document).ready(function($) {
+				$('div.dashboard_content').click(function() {
+					alert("This function has not developed yet.");
+				});
+			});
+			
+			function openAlert() {
+				alert("LouOut");
+			}
+			
+			function jumpCarInfo() {
+				location.href='/employees/car_info';
+			}
+			
+		</script>
+		
+	</head>	
+	
+	<body>
+		<div class = "top_info">
+			<font style="float: center;">Welcome to the system!</font><font color="red">{{username}}</font>
+			<button style="position:absolute;top:0;right:0;" onClick="openAlert()"> Log Out </button>
+		</div>
+		<div class = "left" >
+			<div class = "function_group">
+				<button class="function_button" onclick="myFunction()">Search</button>
+				{% if authority %}
+				<button class="function_button">MIS Report</button>
+				<button class="function_button">Employees Management</button>				
+				{% endif %}
+				<button class="function_button">Orders Information</button>
+				<button class="function_button">Stores Information</button>
+				<button class="function_button">Customers Information</button>
+				<button class="function_button" onclick="jumpCarInfo()">Car Information</button>
+			</div>
+		</div>
+		
+		<div class = "middle">
+		&nbsp
+			<div class = "middle_content">
+				<div class = "dashboard">
+					<div class="dashboard_row">
+						<div class = "dashboard_content">
+							<h2>Car Remaning</h2>&nbsp
+							<img src="{% static 'employees/images/car.png' %}" height="160" width="160">
+							<h3>{{car_remaing}} cars remaning</h3>
+						</div>
+						<div class = "dashboard_content">
+							<h2>Revenue</h2>&nbsp
+							<img src="{% static 'employees/images/revenue.png' %}" height="160" width="160">
+							<h3>&nbsp</h3>
+						</div>
+						<div class = "dashboard_content">
+							<h2>Account</h2>&nbsp
+							<img src="{% static 'employees/images/account.png' %}" height="160" width="160">
+							<h3>&nbsp</h3>
+						</div>
+					</div>
+					<div class = "dashboard_row">
+						<div class = "dashboard_content">
+							<h2>Order</h2>&nbsp
+							<img src="{% static 'employees/images/order.png' %}" height="160" width="160">
+							<h3>&nbsp</h3>
+						</div>
+						<div class = "dashboard_content">
+							<h2>Store</h2>&nbsp
+							<img src="{% static 'employees/images/store.png' %}" height="160" width="160">
+							<h3>&nbsp</h3>
+						</div>
+						<div class = "dashboard_content">
+							<h2>Setting</h2>&nbsp
+							<img src="{% static 'employees/images/setting.png' %}" height="160" width="160">
+							<h3>&nbsp</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>

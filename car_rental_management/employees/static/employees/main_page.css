@@ -1,0 +1,40 @@
+.middle {
+			background-color: #FCFCFB;
+
+
+		}
+
+.middle_content {
+			text-align: center;
+			/*border: 2px solid #ff0000; */
+			margin-left: 10px;
+			margin-right: 10px;
+			padding-top: 130px;
+			padding-bottom: 160px;
+		}
+
+.dashboard {
+		margin: auto;
+		/*border: 2px solid #0000ff;*/
+		}
+
+.dashboard_row {
+			margin: auto;
+			margin-top: 15px;
+		/*	border: 2px solid #ffffff; */
+			padding-bottom: 25px;
+		}
+
+.dashboard_content {
+			/*margin: auto; */
+			height: 350px;
+			width: 350px;
+			margin: 5px;
+			display: inline-block;
+			text-align: center;
+			padding: 10px;
+			padding-left: 80px;
+			padding-right: 80px;
+			box-shadow: 12px, 10px, 10px;
+		}
+

@@ -1,0 +1,167 @@
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% load staticfiles %}
+{% block body %}
+<script src="{% static 'js/advance_search.js' %}"></script>
+<script>
+	function create_new_condition() {
+		if (condition_counter < 5) {
+			document.getElementById("btn_advance").disabled = false;
+			var condition_format = [
+				'<div class="form-group" style="padding: 5px;">',
+				'<select class="form-control" name=' + advance_condition_names[condition_counter] + '>',
+				  '<option value="makename" selected>makeName</option>',
+				  '<option value="model">model</option>',
+				  '<option value="series">series</option>',
+				  '<option value="seriesyear">seriesyear</option>',
+				  '<option value="pricenew">price New</option>',
+				  '<option value="enginesize">enginesize</option>',
+				  '<option value="fuelsystem">fuelsystem</option>',
+				  '<option value="tankcapacity">tankcapacity</option>',
+				  '<option value="power">power</option>',
+				  '<option value="seatingcapacity">seatingcapacity</option>',
+				  '<option value="standardtransmission">standardtransmission</option>',
+				  '<option value="bodytype">bodytype</option>',
+				  '<option value="wheeldrive">wheeldrive</option>',
+				  '<option value="wheelbase">wheelbase</option>',
+				'</select>',
+				'&nbsp;<input class="form-control" type="text" placeholder="Put your condition here" name=' + advance_condition_values[condition_counter] + '>&nbsp;',
+				'<select class="form-control" name=' + advance_connection[condition_counter] + '>',
+				  '<option value="And" selected>And</option>',
+				  '<option value="Or">Or</option>',
+				'</select>',
+				'</div><br>'
+			];
+	
+			var html_string = condition_format.join('');
+			
+			var fragment = create(html_string);
+			var parent = document.getElementById("div_advance");
+			parent.appendChild(fragment);
+			condition_counter++;
+		}
+	};
+</script>
+
+<center>
+<form class="navbar-form navbar-left" role="search" method="post" action="" style="width: 100%;">
+{% csrf_token %}
+                <div id="basic_general" class="form-group">
+                    <input type="text" class="form-control" name="search_condition" placeholder="Search all if no conditions">
+					<button type="submit" class="save btn btn-default" name="general_search">Search</button>
+                </div>
+				
+				<div style="padding-top: 10px; padding-bottom: 5px;" id="div_order">
+					<select class="form-control" name="order_category"> 
+						  <option value="vehicleid" selected>vehicle id</option>
+						  <option value="makename">makeName</option>
+						  <option value="model">model</option>
+						  <option value="series">series</option>
+						  <option value="seriesyear">seriesyear</option>
+						  <option value="pricenew">price New</option>
+						  <option value="enginesize">enginesize</option>
+						  <option value="fuelsystem">fuelsystem</option>
+						  <option value="tankcapacity">tankcapacity</option>
+						  <option value="power">power</option>
+						  <option value="seatingcapacity">seatingcapacity</option>
+						  <option value="standardtransmission">standardtransmission</option>
+						  <option value="bodytype">bodytype</option>
+						  <option value="wheeldrive">wheeldrive</option>
+						  <option value="wheelbase">wheelbase</option>
+					</select>
+					
+					<select class="form-control" name="order_type">
+						<option value="ascending" selected>ascending</option>
+						<option value="descending">descending</option>
+					</select>
+					
+					<button class="save btn btn-default" type="submit" name="btn_order">Reorder</button>
+					
+				</div>
+				
+				<div id="div_advance" class="form-group" style="width: 100%; display: none;">
+                </div>
+				<button id="btn_advance" type="submit" class="save btn btn-default" name="advance_search" style="display: none;" disabled>Search</button>                
+</form>
+<div style="width: 100%;">
+	<div style="margin-left: 15px;">
+		<button id="btn_new_condition" class="btn btn-secondary" onclick="create_new_condition()" style="display: none; float: none;">Create New Condition</button>
+		<button id="btn_clear" class="btn btn-danger" onclick="remove_conditions()" style="display: none; float: none; margin-top: 5px; margin-bottom: 5px;">Clear All Conditions</button>
+	</div>
+	<button class="btn btn-secondary" onclick="hideGeneralSearch();" style="margin-left: 15px;">Switch Search Method</button>
+</div>
+</center>
+
+<div style="width: 100%;">
+{% if cars %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Car</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">vehicle id</th>
+				<th scope="col">makename</th>
+				<th scope="col">model</th>
+				<th scope="col">series</th>
+				<th scope="col">seriesyear</th>
+				<th scope="col">pricenew</th>
+				<th scope="col">enginesize</th>
+				<th scope="col">fuelsystem</th>
+				<th scope="col">tankcapacity</th>
+				<th scope="col">power</th>
+				<th scope="col">seatingcapacity</th>
+				<th scope="col">standardtransmission</th>
+				<th scope="col">bodytype</th>
+				<th scope="col">wheeldrive</th>
+				<th scope="col">wheelbase</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for car in cars%}
+			<tr>
+				<td>{{car.vehicleid}}</td>
+				<td>{{car.makename}}</td>
+				<td>{{car.model}}</td>
+				<td>{{car.series}}</td>
+				<td>{{car.seriesyear}}</td>
+				<td>{{car.pricenew}}</td>
+				<td>{{car.enginesize}}</td>
+				<td>{{car.fuelsystem}}</td>
+				<td>{{car.tankcapacity}}</td>
+				<td>{{car.power}}</td>
+				<td>{{car.seatingcapacity}}</td>
+				<td>{{car.standardtransmission}}</td>
+				<td>{{car.bodytype}}</td>
+				<td>{{car.wheeldrive}}</td>
+				<td>{{car.wheelbase}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if cars.has_previous %}
+				<a href="?cars=1&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?cars={{ cars.previous_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ cars.number }} of {{ cars.paginator.num_pages }}.
+			</span>
+
+			{% if cars.has_next %}
+				<a href="?cars={{ cars.next_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">next</a>
+				<a href="?cars={{ cars.paginator.num_pages }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+{%elif msg%}
+{{msg}}
+{% else %}
+No Data Has Found
+{% endif %}
+</div>
+{% endblock %}

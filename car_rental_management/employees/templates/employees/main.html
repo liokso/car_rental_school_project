@@ -1,0 +1,85 @@
+{% extends 'employees/base.html' %}
+{% block title %}Main{% endblock %}
+{% load staticfiles %}
+{% block body %}
+
+
+<link rel = "stylesheet" type = "text/css" href="{% static 'employees/main_page.css' %}"/>
+<div class = "middle">
+<form class="navbar-form navbar-left" role="search" method="post" action="/employees/search_result">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search_condition">
+                </div>
+				{% csrf_token %}
+                <button type="submit" class="save btn btn-default">Search</button>
+</form>
+
+		&nbsp;<br>
+		&nbsp;<br>
+		&nbsp;<br>
+			<div class = "middle_content">
+				<div class = "dashboard">
+					<div class="dashboard_row">
+						<div class = "dashboard_content" id="car_remains">
+							<h2>Car Remaining</h2>&nbsp;
+							<img src="{% static 'employees/images/car.png' %}" height="160" width="160">
+							<h3>{{car_remaining}}</h3>
+						</div>
+						<div class = "dashboard_content" id="customer">
+							<h2>New Customer</h2>&nbsp;
+							<img src="{% static 'employees/images/account.png' %}" height="160" width="160">
+							<h3>{{new_customer}}</h3>
+						</div>
+						<div class = "dashboard_content" id="r_order">
+							<h2>Recent<br>Order&nbsp;</h2>&nbsp;
+							<img src="{% static 'employees/images/order.png' %}" height="160" width="160">
+							<h3>{{recent_order}}</h3>
+						</div>
+						<div class = "dashboard_content" id="r_store">
+							<h2>Recent<br>Store</h2>&nbsp;
+							<img src="{% static 'employees/images/store.png' %}" height="160" width="160">
+							<h3>{{active_store}}</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			&nbsp;<br>
+			&nbsp;<br>
+			&nbsp;<br>
+			&nbsp;<br>
+		</div>
+		
+<script>
+$(document).ready(function() {
+	<!-- $(".dashboard_content").click(function() { -->
+		<!-- alert("GO"); -->
+		<!-- return false; -->
+	<!-- }); -->
+	$('#car_remains').click(function() {
+		window.location=dict_page['CarI'];
+		//alert("This function has not been developed");
+		return false;
+	});
+	
+	$('#customer').click(function() {
+		window.location=dict_page['CI'];
+		//alert("This function has not been developed");
+		return false;
+	});
+	
+	$('#r_order').click(function() {
+		window.location=dict_page['OI'];
+		//alert("This function has not been developed");
+		return false;
+	});
+	
+	$('#r_store').click(function() {
+		window.location=dict_page['SI'];
+		//alert("This function has not been developed");
+		return false;
+	});
+	
+	
+});
+</script>
+{% endblock %}

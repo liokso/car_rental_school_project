@@ -1,0 +1,28 @@
+{% extends 'employees/base.html' %}
+{% block body %}
+<center>
+
+    <div style="margin-left:0px; margin-top:100px">
+        <font size=6>Update Email</font>
+        <div style="margin-left:0px; margin-top:50px">
+            <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}
+                {{ field }}<br>
+                {% if field.help_text %}
+                    <div style="margin-left:20px; margin-top:-7px"><small style="color: grey">{{ field.help_text }}</small></div>
+                {% endif %}
+            </p>
+        {% endfor %}
+        <div style="margin-left:0px; margin-top:50px"><button type="submit" class="btn btn-primary">Update Email</button></div>
+        <div style="margin-left:0px; margin-top:15px">
+            <font color="red">{{ error }}</font>
+        </div>
+    </form>
+        </div>
+
+    </div>
+</center>
+{% endblock %}

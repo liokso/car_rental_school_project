@@ -1,0 +1,1 @@
+Please make sure the type of column 'tankCapacity' has been changed to decimal(4,1)

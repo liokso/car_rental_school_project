@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load static %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
+<script>
+
+var dict_page = new Object();
+var dict_btn_stage = new Object();
+
+var dict_page = {
+	"Main": "/employees/main",
+	"MIS" : "/employees/mis",
+	"HR"  : "/employees/emp_man",
+	"OI"  : "/employees/order_info",
+	"SI"  : "/employees/store_info",
+	"CI"  : "/employees/cus_info",
+	"CarI": "/employees/car_info",
+};
+
+var array_web_site_parts = ["main", "mis", "emp_man", "order_info", "store_info", "cus_info", "car_info"]
+
+// used to set button state relates to current page
+var dict_btn_stage = {
+	"main" : "btn_main",
+	"mis" : "btn_mis",
+	"emp_man" : "btn_em",
+	"order_info" : "btn_oi",
+	"store_info" : "btn_si",
+	"cus_info" : "btn_ci",
+	"car_info" : "btn_car",
+}
+
+function openFunction(evt, functionName) {
+    var tablinks;
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+	
+    evt.currentTarget.className += " active";
+	//alert(location.href);
+	location.href = dict_page[functionName];
+}
+
+function changeBtnState() {
+	var currentAddress = location.href;
+	//attr = currentAddress.split("/");
+	//content = attr[attr.length - 1];
+	//var a = "btn_main_1";
+	for (var i = 0; i < array_web_site_parts.length; i++) {
+		if (currentAddress.includes(array_web_site_parts[i])) {
+			console.log(array_web_site_parts[i]);
+			document.getElementById(dict_btn_stage[array_web_site_parts[i]]).className += " active";
+			break;
+		}
+	}
+	
+	//var reg = /e*;
+	//alert(reg.exec(currentAddress));
+}
+
+function windowClose() {
+	//window.open('','_parent','');
+	alert("exist window");
+}
+
+window.onload = function() {
+	changeBtnState();
+};
+
+
+
+</script>
+
+<style>
+body {font-family: Arial;}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+	margin-top: -20px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.5s;
+    font-size: 15px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+.navbar{
+    border-radius: 0;
+}
+
+.base_title {
+	font-family: 'Satisfy', cursive;
+	font-size: 15px;
+	color: white;
+	float:left;height:50px;padding:15px 15px;font-size:18px;line-height:20px
+}
+
+
+</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+
+        <!-- Header -->
+        <div>
+            <font class="base_title">Welcome to the system! {{request.session.name}}</font>
+        </div>
+
+        <!-- Item -->
+        <div class="collapse navbar-collapse" id="topNavBar">			
+			<!-- <form class="navbar-form navbar-left" role="search" method="post" action="/employees/search_result"> -->
+                <!-- <div class="form-group"> -->
+					<!-- <input type="hidden" name="search" value="search_test"> -->
+                    <!-- <input type="text" class="form-control" name="search_condition"> -->
+                <!-- </div> -->
+				<!-- {% csrf_token %} -->
+                <!-- <button type="submit" class="save btn btn-default">Search</button> -->
+            <!-- </form> -->
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="/employees/profile">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/employees/email">
+                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp; Email
+                    </a>
+                </li>
+                <li class="">
+                    <a href="/employees/logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+</nav>
+
+<div class="tab">
+	<button class="tablinks" id = "btn_main" onclick="openFunction(event, 'Main')">Main</button>
+	{% if request.session.user_access_level > 4 %}
+	<button class="tablinks" id = "btn_mis" onclick="openFunction(event, 'MIS')">MIS</button>
+	<button class="tablinks" id = "btn_em" onclick="openFunction(event, 'HR')">HR Management</button>
+	{% endif %}
+	<button class="tablinks" id = "btn_oi" onclick="openFunction(event, 'OI')">Orders Information</button>
+	<button class="tablinks" id = "btn_si" onclick="openFunction(event, 'SI')">Stores Information</button>
+	<button class="tablinks" id = "btn_ci" onclick="openFunction(event, 'CI')">Customers Information</button>
+	<button class="tablinks" id = "btn_car" onclick="openFunction(event, 'CarI')">Car Information</button>
+</div>
+
+{% block body %}
+{% endblock %}
+     
+</body>
+</html> 

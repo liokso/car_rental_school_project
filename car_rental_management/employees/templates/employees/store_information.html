@@ -1,0 +1,130 @@
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+{% load staticfiles %}
+{% block body %}
+<script src="{% static 'js/advance_search.js' %}"></script>
+<script>
+	function create_new_condition() {
+		if (condition_counter < 5) {
+			document.getElementById("btn_advance").disabled = false;
+			var condition_format = [
+				'<div class="form-group" style="padding: 5px;">',
+				'<select class="form-control" name=' + advance_condition_names[condition_counter] + '>',
+				  '<option value="storename" selected>store name</option>',
+				  '<option value="storeaddress">store address</option>',
+				  '<option value="storephonenumber">store phonenumber</option>',
+				  '<option value="cityname">cityname</option>',
+				  '<option value="citystate">citystate</option>',
+				'</select>',
+				'&nbsp;<input class="form-control" type="text" placeholder="Put your condition here" name=' + advance_condition_values[condition_counter] + '>&nbsp;',
+				'<select class="form-control" name=' + advance_connection[condition_counter] + '>',
+				  '<option value="And" selected>And</option>',
+				  '<option value="Or">Or</option>',
+				'</select>',
+				'</div><br>'
+			];
+	
+			var html_string = condition_format.join('');
+			
+			var fragment = create(html_string);
+			var parent = document.getElementById("div_advance");
+			parent.appendChild(fragment);
+			condition_counter++;
+		}
+	};
+</script>
+<center>
+<form class="navbar-form navbar-left" role="search" method="post" action="/employees/store_info" style="width: 100%;">
+{% csrf_token %}
+                <div id="basic_general" class="form-group">
+                    <input type="text" class="form-control" name="search_condition" placeholder="Search all if no conditions">
+					<button type="submit" class="save btn btn-default" name="general_search">Search</button>
+                </div>
+				
+				<div style="padding-top: 10px; padding-bottom: 5px;" id="div_order">
+					<select class="form-control" name="order_category">
+						 <option value="storeid" selected>store id</option>
+						 <option value="storename">store name</option>
+						 <option value="storeaddress">store address</option>
+						 <option value="storephonenumber">store phonenumber</option>
+						 <option value="cityname">cityname</option>
+						 <option value="citystate">citystate</option>
+					</select>
+					
+					<select class="form-control" name="order_type">
+						<option value="ascending" selected>ascending</option>
+						<option value="descending">descending</option>
+					</select>
+					
+					<button class="save btn btn-default" type="submit" name="btn_order">Reorder</button>
+					
+				</div>
+				
+				<div id="div_advance" class="form-group" style="width: 100%; display: none;">
+                </div>
+				<button id="btn_advance" type="submit" class="save btn btn-default" name="advance_search" style="display: none;" disabled>Search</button>             
+</form>
+<div style="width: 100%;">
+	<div style="margin-left: 15px;">
+		<button id="btn_new_condition" class="btn btn-secondary" onclick="create_new_condition()" style="display: none; float: none;">Create New Condition</button>
+		<button id="btn_clear" class="btn btn-danger" onclick="remove_conditions()" style="display: none; float: none; margin-top: 5px; margin-bottom: 5px;">Clear All Conditions</button>
+	</div>
+	<button class="btn btn-secondary" onclick="hideGeneralSearch();" style="margin-left: 15px;">Switch Search Method</button>
+</div>
+</center>
+
+<div style="width: 100%;">
+{% if stores %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Store</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">store id</th>
+				<th scope="col">store name</th>
+				<th scope="col">store address</th>
+				<th scope="col">store phonenumber</th>
+				<th scope="col">store city</th>
+				<th scope="col">store state</th>
+
+			</tr>
+		</thead>
+		<tbody>
+	{% for store in stores%}
+			<tr>
+				<td>{{store.storeid}}</td>
+				<td>{{store.storename}}</td>
+				<td>{{store.storeaddress}}</td>
+				<td>{{store.storephonenumber}}</td>
+				<td>{{store.storecityid.cityname}}</td>
+				<td>{{store.storecityid.citystate}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if stores.has_previous %}
+				<a href="?stores=1&customers={{ customers.number }}&orders={{ orders.number }}&cars={{cars.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?stores={{ stores.previous_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ stores.number }} of {{ stores.paginator.num_pages }}.
+			</span>
+
+			{% if stores.has_next %}
+				<a href="?stores={{ stores.next_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}">next</a>
+				<a href="?stores={{ stores.paginator.num_pages }}&orders={{ orders.number }}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+{%elif msg%}
+{{msg}}
+{% else %}
+No Data Has Found
+{% endif %}
+</div>
+{% endblock %}

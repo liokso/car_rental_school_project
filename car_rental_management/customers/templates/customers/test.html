@@ -1,0 +1,27 @@
+{& extends 'post/base.html' %}
+(% block title %}
+<title>Home</title>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% for post in object_list %}
+    <h1> {{ post.vehicleid }}</h1>
+    <h1> {{ post.makename }}</h1>
+    <h1> {{ post.model }}</h1>
+    <h1> {{ post.series }}</h1>
+    <h1> {{ post.seriesyear }}</h1>
+    <h1> {{ post.pricenew }}</h1>
+    <h1> {{ post.enginesize }}</h1>
+    <h1> {{ post.fuelsystem }}</h1>
+    <h1> {{ post.tankcapacity }}</h1>
+    <h1> {{ post.power }}</h1>
+    <h1> {{ post.seatingcapacity }}</h1>
+    <h1> {{ post.standardtransmission }}</h1>
+    <h1> {{ post.bodytype }}</h1>
+    <h1> {{ post.wheeldrive }}</h1>
+    <h1> {{ post.wheelbase }}</h1>
+    {% endfor %}
+{% endblock %}
+
+</div>

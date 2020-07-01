@@ -1,0 +1,109 @@
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<script>
+	
+	function hideGeneralSearch() {
+		
+		<!-- alert("a"); -->
+		<!-- general_search = document.getElementsById("basic_general"); -->
+		<!-- general_search.style.visibility='hidden'; -->
+		$("#basic_general").toggle("fast");
+		//alert($("#basic_general").visibility);
+		$("#aaa").toggle("fast");
+	}
+	
+	  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+	
+</script>
+<!-- display: none; -->
+<form class="navbar-form navbar-left" role="search" method="post" action="/employees/cus_info">
+{% csrf_token %}
+                <div id="basic_general" class="form-group">
+                    <input type="text" class="form-control" name="search_condition">
+					<button type="submit" class="save btn btn-default" name="general_search">Search</button>
+                </div>
+				<div id="aaa" class="form-group" style="width: 100%;"> 
+					<label>Customer firstname</label>
+                    <input type="text" class="form-control" name="firstname_condition"><br>
+					<label>Customer lastname</label>
+                    <input type="text" class="form-control" name="lastname_condition"><br>
+					<label>Customer date of birth</label>
+                    <input type="text" class="form-control" name="dob_condition"><br>
+					<label>Customer address</label>
+                    <input type="text" class="form-control" name="address_condition"><br>
+					<label>Customer occupation</label>
+                    <input type="text" class="form-control" name="occupation_condition"><br>
+					<label>Customer gender</label>
+                    <input type="text" class="form-control" name="gender_condition"><br>
+					<button type="submit" class="save btn btn-default" name="advance_search">Advance Search</button>
+                </div>
+</form><br><br><br>
+<button class="btn btn-outline-secondary" onclick="hideGeneralSearch();">Switch Search Method</button>
+				Date: <input type="text" id="datepicker">
+{% if customers %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Customer</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">customer id</th>
+				<th scope="col">customer firstname</th>
+				<th scope="col">customer lastname</th>
+				<th scope="col">customer dob</th>
+				<th scope="col">customer address</th>
+				<th scope="col">customer occupation</th>
+				<th scope="col">customer gender</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for customer in customers%}
+			<tr>
+				<td>{{customer.customerid}}</td>
+				<td>{{customer.customerfirstname}}</td>
+				<td>{{customer.customerlastname}}</td>
+				<td>{{customer.customerdob}}</td>
+				<td>{{customer.customeraddress}}</td>
+				<td>{{customer.customeroccupation}}</td>
+				<td>{{customer.customergender}}</td>
+				<!--{% if customer.customergender == 'M'%}-->
+				<!--Male-->
+				<!--{% elif customer.customergender == 'F' %}-->
+				<!--Female-->
+				<!--{% endif %}-->
+
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if customers.has_previous %}
+				<a href="?customers=1&stores={{stores.number}}&orders={{ orders.number }}&cars={{cars.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?customers={{ customers.previous_page_number }}&orders={{ orders.number }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
+			</span>
+
+			{% if customers.has_next %}
+				<a href="?customers={{ customers.next_page_number }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">next</a>
+				<a href="?customers={{ customers.paginator.num_pages }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+{% else %}
+No Data Has Found
+{% endif %}
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,2 @@
+Put this code into any function you want to debug
+import pdb; pdb.set_trace()

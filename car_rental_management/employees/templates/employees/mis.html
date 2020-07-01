@@ -1,0 +1,522 @@
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+{% load staticfiles %}
+{% block body %}
+<script src="http://www.chartjs.org/dist/2.7.2/Chart.bundle.js"></script>
+<script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+<script src="{% static 'js/jspdf.debug.js' %}"></script>
+<script src="{% static 'js/html2pdf.js' %}"></script>
+<script>
+
+	window.onload = function() {
+		
+		
+		if (document.getElementById("id_predOptions_0").checked == false && document.getElementById("id_predOptions_1").checked == false && document.getElementById("id_predOptions_2").checked == false){
+			document.getElementById("id_predOptions_1").checked = true;
+		}
+		
+		if (document.getElementById("id_periodTime_0").checked == false && document.getElementById("id_periodTime_1").checked == false && document.getElementById("id_periodTime_2").checked == false
+			&& document.getElementById("id_periodTime_3").checked == false && document.getElementById("id_periodTime_4").checked == false && document.getElementById("id_periodTime_5").checked == false
+		){
+			document.getElementById("id_periodTime_0").checked = true;
+		}
+		
+		if (document.getElementById("id_WheelDrive_0").checked == false && document.getElementById("id_WheelDrive_1").checked == false && document.getElementById("id_WheelDrive_2").checked == false){
+			document.getElementById("id_WheelDrive_0").checked = true;
+		}
+
+		if (document.getElementById("id_Transmission_0").checked == false && document.getElementById("id_Transmission_1").checked == false){
+			document.getElementById("id_Transmission_0").checked = true;
+		}
+		
+		if (document.getElementById("id_numberOf_0").checked == false && document.getElementById("id_numberOf_1").checked == false && document.getElementById("id_numberOf_2").checked == false){
+			document.getElementById("id_numberOf_0").checked = true;
+		}
+		
+		if (document.getElementById("id_selectMakeModel_0").checked == false && document.getElementById("id_selectMakeModel_1").checked == false && document.getElementById("id_selectMakeModel_2").checked == false){
+			document.getElementById("id_selectMakeModel_0").checked = true;
+		}
+	};
+
+</script>
+
+<style>
+
+ul { 
+	list-style: none outside none; 
+	margin:0; 
+	padding: 8px; 
+	text-align: left; 
+}
+
+.misTab {
+	position: relative;
+    overflow: hidden;
+	border: none;
+    background-color: #f1f1f1;
+	margin-top: -20px;
+}
+
+.title2 {
+	font-size: 22px;
+}
+
+.title3 {
+	font-size: 18px;
+}
+
+
+.button_style{
+	font-size: 16px;
+    border: none;
+    color: black;
+	background-color: #ddd;
+    padding: 12px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+	-webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+	
+}
+
+.button_style:hover{
+	background-color: #565656;
+	color: white;
+}
+
+
+.bottomright {
+    position: absolute;
+    bottom: 2px;
+    right: 16px;
+    font-size: 18px;
+}
+
+.column {
+    float: left;
+}
+
+.left {
+    width: 350px;
+}
+
+.right {
+    width: 50%;
+}
+
+.middle {
+    width: 25%;
+}
+
+.buttonLocation{
+	 float: bottomright;
+}
+
+.leftInfo {
+    width: 30%;
+	padding-right: 20px;
+}
+
+.rightInfo {
+	min-width: 800px;
+	min-height: 600px;
+    width: 60%;
+	padding-left: 40px;
+	padding-right: 20px;
+	float: left;
+}
+
+.rangeColumn{
+
+	width: 80px;
+}
+
+@media screen and (max-width: 800px) {
+    .column {
+        width: 100%;
+    }
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+	
+canvas{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+}
+
+</style>
+
+&nbsp;
+
+<div class="misTab">
+
+
+<form action="" method="POST" class="ul" id="condition_form">
+	<h2 class='title2' style="margin-left: 5px;">Sales Analysis</h2>
+	<div>
+		<div class="column left">
+			<h3 class= 'title3' style="margin-left: 5px;">By City:</h3>
+			<ul float="left" id="id_predOptions">
+				<li><label for="id_predOptions_0"><input type="radio" name="predOptions" value="1" id="id_predOptions_0" {%if misCond1 == '1' %}checked{% endif %}>Either</label></li>
+				<li><label for="id_predOptions_1"><input type="radio" name="predOptions" value="2" id="id_predOptions_1" {%if misCond1 == '2' or misCond2 == '6' %}checked{% endif %}>Car Pickup</label></li>
+				<li><label for="id_predOptions_2"><input type="radio" name="predOptions" value="3" id="id_predOptions_2" {%if misCond1 == '3' %}checked{% endif %}>Car Return</label></li>
+			</ul> 
+			
+			<p style="margin-left: 5px;">Select City:</p>
+			<p><label><input type="checkbox" style="margin-left: 8px;" onchange="ClearCityList()" name="allCities" id="id_allCities" {%if misCond3all == True or misCond3 == Null %}checked{% endif %}>All Cities</label></P>
+				<script>
+					function ClearCityList()
+					{
+						var list = document.getElementById('id_selectCity');
+
+						if (document.getElementById("id_allCities").checked == true){
+							list.selectedIndex =-1;
+						}	
+
+					}
+					
+				</script>
+			<select style="margin-left: 8px;" onclick="UncheckAllCities()" name="selectCity" size="7" id="id_selectCity">
+				{% for city in cityList %}
+					<option value="{{ city.pk }}" {%if misCond3 == city.pk and misCond3all == False %}selected{% endif %}>{{ city.mis_cityName }}</option>
+				{% endfor %}
+			</select>
+				<script>	
+					function UncheckAllCities()
+					{
+						var list = document.getElementById('id_selectCity');
+						
+						if (list){
+							document.getElementById("id_allCities").checked = false;
+						}
+					}
+				</script>
+		</div>
+		
+		
+		<div class="column left">
+			
+			<h3 class= 'title3' style="margin-left: 5px;">Number of:</h3>
+			<ul float="left"  id="id_numberOf">
+				<li><label for="id_numberOf_0"><input type="radio" name="numberOf" value="1" id="id_numberOf_0" {%if misCond2a == '1' %}checked{% endif %}>Sales</label></li>
+				<li><label for="id_numberOf_1"><input type="radio" name="numberOf" value="2" id="id_numberOf_1" {%if misCond2a == '2' %}checked{% endif %}>Different Makes</label></li>
+				<li><label for="id_numberOf_2"><input type="radio" name="numberOf" value="3" id="id_numberOf_2" {%if misCond2a == '3' %}checked{% endif %}>Different Models</label></li>
+			<ul/>
+			
+			<p style="margin-left: 5px;">by:</p>
+			<ul id="id_periodTime">
+				<li><label for="id_periodTime_0"><input type="radio" name="periodTime" value="1" id="id_periodTime_0" {%if misCond2 == '1' %}checked{% endif %}>Month</label></li>
+				<li><label for="id_periodTime_1"><input type="radio" name="periodTime" value="2" id="id_periodTime_1" {%if misCond2 == '2' %}checked{% endif %}>Quarter</label></li>
+				<li><label for="id_periodTime_2"><input type="radio" name="periodTime" value="3" id="id_periodTime_2" {%if misCond2 == '3' %}checked{% endif %}>Year</label></li>
+				<li><label for="id_periodTime_3"><input type="radio" name="periodTime" value="4" id="id_periodTime_3" {%if misCond2 == '4' %}checked{% endif %}>Month Over Year</label></li>
+				<li><label for="id_periodTime_4"><input type="radio" name="periodTime" value="5" id="id_periodTime_4" {%if misCond2 == '5' %}checked{% endif %}>Quarter Over Year</label></li>
+				<li><label for="id_periodTime_5"><input type="radio" name="periodTime" value="6" id="id_periodTime_5" {%if misCond2 == '6' %}checked{% endif %}>Top 10 Cities (all cities)</label></li>
+			</ul>
+		
+		</div>
+
+
+		<div class="column left">
+			<h3 class= 'title3' style="margin-left: 5px;">Select Car Aspect:</h3>
+			<p id="id_WheelDrive" style="margin-left: 8px;"><input type="checkbox"  onclick="checkWD()" name="vWheelDrive" id="id_WheelDrive" {%if misCond4 == True %}checked{% endif %}>Wheel Drive:&nbsp;
+																			<label for="id_WheelDrive_0"><input type="radio" name="wheelDrive" value="1" id="id_WheelDrive_0" {%if misCond4a == '1' %}checked{% endif %}>FWD</label></li> &nbsp;
+																			<label for="id_WheelDrive_1"><input type="radio" name="wheelDrive" value="2" id="id_WheelDrive_1" {%if misCond4a == '2' %}checked{% endif %}>RWD</label></li> &nbsp;
+																			<label for="id_WheelDrive_2"><input type="radio" name="wheelDrive" value="3" id="id_WheelDrive_2" {%if misCond4a == '3' %}checked{% endif %}>4WD</label></li> &nbsp;
+			</p>
+				<script>
+					function checkWD()
+					{
+						var cbWD = document.getElementById("id_WheelDrive");
+						if (cbWD.checked == true) {
+							document.getElementById("id_WheelDrive_0").checked = false;
+							document.getElementById("id_WheelDrive_1").checked = false;
+							document.getElementById("id_WheelDrive_2").checked = false;
+						}
+					}
+				</script>
+			<p id="id_Transmission" style="margin-left: 8px;"><input type="checkbox" onclick="checkTransmission()" name="vTransmission" id="id_Transmission" {%if misCond11 == True %}checked{% endif %}>Transmission:&nbsp;
+																			<label for="id_Transmission_0"><input type="radio" name="transmission" value="1" id="id_Transmission_0" {%if misCond11a == '1' %}checked{% endif %}>Automatic</label></li> &nbsp;
+																			<label for="id_Transmission_1"><input type="radio" name="transmission" value="2" id="id_Transmission_1" {%if misCond11a == '2' %}checked{% endif %}>Manual</label></li> &nbsp;
+			
+			
+				<script>
+					function checkTransmission()
+					{
+						if (document.getElementById("id_Transmission").checked != true) {
+							document.getElementById("id_Transmission_0").checked = false;
+							document.getElementById("id_Transmission_1").checked = false;
+						}
+					}
+				</script>
+			</p>
+					
+			<p style="margin-left: 8px;"><input type="checkbox" name="vNoSeats" id="id_NoSeats" {%if misCond5 == True %}checked{% endif %}>Number of seats: <input type="text" class="rangeColumn" name="optNS1" id="id_optNS1" value="{{ misCond5a }}"> to: <input type="text" class="rangeColumn" name="optNS2" id="id_optNS2" value="{{ misCond5b }}"></p>
+			<p style="margin-left: 8px;"><input type="checkbox" name="vTankCapacity" id="id_TankCapacity" {%if misCond6 == True %}checked{% endif %}>Tank Capacity: <input type="text" class="rangeColumn" name="optTC1" id="id_optTC1" value="{{ misCond6a }}"> to: <input type="text" class="rangeColumn" name="optTC2" id="id_optTC2" value="{{ misCond6b }}"></p>
+			<p style="margin-left: 8px;"><input type="checkbox" name="vPower" id="id_Power" {%if misCond7 == True %}checked{% endif %}>Power: <input type="text" class="rangeColumn" name="optPW1" id="id_optPW1" value="{{ misCond7a }}"> to: <input type="text" class="rangeColumn" name="optPW2" id="id_optPW2" value="{{ misCond7b }}"></p>
+			<p style="margin-left: 8px;"><input type="checkbox" name="vEngineSize" id="id_EngineSize" {%if misCond8 == True %}checked{% endif %}>Enzine Size: <input type="text" class="rangeColumn" name="optES1" id="id_optES1" value="{{ misCond8a }}"> to: <input type="text" class="rangeColumn" name="optES2" id="id_optES2" value="{{ misCond8b }}"></p>
+			<p style="margin-left: 8px;"><input type="checkbox" name="vCarYear" id="id_CarYear" {%if misCond9 == True %}checked{% endif %}>Car Year: <input type="text" class="rangeColumn" name="optCY1" id="id_optCY1" value="{{ misCond9a }}"> to: <input type="text" class="rangeColumn" name="optCY2" id="id_optCY2" value="{{ misCond9b }}"></p>
+			<p style="margin-left: 8px;"><input type="checkbox" name="vWheelBase" id="id_WheelBase" {%if misCond10 == True %}checked{% endif %}>Wheel Base: <input type="text" class="rangeColumn" name="optWB1" id="id_optWB1" value="{{ misCond10a }}"> to: <input type="text" class="rangeColumn" name="optWB2" id="id_optWB2" value="{{ misCond10b }}"></p>
+
+		</div>
+		<div class="column left">
+			<h3 class= 'title3' style="margin-left: 5px;">Select Car by:</h3>
+			<p for="id_selectMakeModel_0" style="margin-left: 8px;"><label><input type="radio" onchange="SelectionCarMakeModel()" name="selectMakeModel" value="1" id="id_selectMakeModel_0" {%if misCond12 == '1' %}checked{% endif %}>All</label></p>
+			<p for="id_selectMakeModel_1" style="margin-left: 8px;"><label><input type="radio" onchange="SelectionCarMakeModel()" name="selectMakeModel" value="2" id="id_selectMakeModel_1" {%if misCond12 == '2' %}checked{% endif %}>Make:</label></p>
+			<select style="margin-left: 8px; width: 180px;" onchange="SelectionCarMakeModel()" name="selectMake" size="5" id="id_selectMake">
+				{% for make in makeList %}
+					<option value="{{ make.pk }}" {%if misCond12 == '2' and misCond12c == make.pk %}selected{% endif %}>{{ make.mis_makeName }}</option>
+				{% endfor %}
+			</select>
+			<br><br>
+			<p for="id_selectMakeModel_2" style="margin-left: 8px;"><label><input type="radio" onchange="SelectionCarMakeModel()" name="selectMakeModel" value="3" id="id_selectMakeModel_2" {%if misCond12 == '3' %}checked{% endif %}>Model:</label></p>
+			<select style="margin-left: 8px; width: 180px;" onchange="SelectionCarMakeModel()" name="selectModel" size="5" id="id_selectModel">
+				{% for model in modelList %}
+					<option value="{{ model.pk }}" {%if misCond12 == '3' and misCond12c == model.pk %}selected{% endif %}>{{ model.mis_modelName }}</option>
+				{% endfor %}
+			</select>
+			
+			<script>	
+				function SelectionCarMakeModel()
+				{
+					var listMake = document.getElementById('id_selectMake');
+					var listModel = document.getElementById('id_selectModel');
+					
+					if (document.getElementById('id_selectMakeModel_0').checked == true){
+						listMake.selectedIndex =-1;
+						listModel.selectedIndex =-1;
+					}
+					else if (document.getElementById('id_selectMakeModel_1').checked == true){
+						listModel.selectedIndex =-1;
+					}
+					else if (document.getElementById('id_selectMakeModel_2').checked == true){
+						listMake.selectedIndex =-1;
+					}
+				}
+			</script>
+		</div>
+		
+	</div>
+	
+	&nbsp;
+	<br><br>
+	{% csrf_token %}
+	<div class="buttonLocation">
+		<button class="save btn btn-default" id = "btn_Analyse" onclick="openFunction(event, 'SalesAnalysis')">Analyse</button>
+	</div>
+
+
+</form>
+
+
+</div>
+&nbsp;
+
+{% if misResult %}
+
+	<div class="column leftInfo">
+		
+		{% for sentence in misMessage %}
+		<p>{{ sentence }}</p>
+		{% endfor %}
+		&nbsp;
+		<table class="table table-striped">
+			<thead>
+				<tr>
+						<th scope="col">{{ xInfo }}</th>
+						<th scope="col">{{ yInfo }}</th>
+						
+				</tr>
+			</thead>
+			<tbody>
+		{% for result in misResult %}
+				<tr>
+					{% if misCond2 == '1' %}
+					<td>{{ result.1 }}</td>
+					<td>{{ result.2 }}</td>
+					{% elif misCond2 == '2' or misCond2 == '3' or misCond2 == '6' %}
+					<td>{{ result.0 }}</td>
+					<td>{{ result.1 }}</td>
+					{% elif misCond2 == '4' %}
+					<td>{{ result.1 }} - {{ result.2 }}</td>
+					<td>{{ result.3 }}</td>
+					{% elif misCond2 == '5' %}
+					<td> {{ result.1 }} - {{ result.0 }} </td>
+					<td>{{ result.2 }}</td>		
+					{% endif %}
+				</tr>
+		{% endfor %}
+			</tbody>
+		</table>
+		
+
+
+		
+	</div>
+	<!-- <button onclick="printPDF()">aaa</button> -->
+	
+	<div class="column rightInfo" id="reportPage">
+
+		<canvas id="canvas"></canvas>
+		<script>
+			var xLabel = [];
+			var index = 0;
+			var yLabel=[];
+			var minValue = {{ minValue }};
+			var maxValue = {{ maxValue }};
+			var stepSize = {{ stepSize }};
+			
+			{% for result in misResult %}
+				
+				{% if misCond2 == '1' %}
+					xLabel[index] = '{{ result.1 }}'
+					yLabel[index] = '{{ result.2 }}'
+				{% elif misCond2 == '2' or misCond2 == '3' or misCond2 == '6' %}
+					xLabel[index] = '{{ result.0 }}'
+					yLabel[index] = '{{ result.1 }}'				
+				
+				{% elif misCond2 == '4' %}
+					xLabel[index] = '{{ result.1 }}' + ' - {{ result.2 }}'
+					yLabel[index] = '{{ result.3 }}'				
+				
+				{% elif misCond2 == '5' %}
+					xLabel[index] = '{{ result.1 }}' + ' - {{ result.0 }}'
+					yLabel[index] = '{{ result.2 }}'				
+				{% endif %}
+				
+				index++;
+			{% endfor %}
+			
+			
+			var xName = '{{ xInfo }}'
+			var yName = '{{ yInfo }}'
+			
+			var config = {
+				type: 'line',
+				data: {
+					labels: xLabel,
+					datasets: [{
+						label: yName,
+						backgroundColor: window.chartColors.blue,
+						borderColor: window.chartColors.blue,
+						data: yLabel,
+						fill: false,
+					} ]
+				},
+				options: {
+					responsive: true,
+					title: {
+						display: false,
+						text: 'Test'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: false,
+					},
+					hover: {
+						mode: 'nearest',
+						intersect: true
+					},
+					scales: {
+						xAxes: [{
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: xName
+							}
+						}],
+						yAxes: [{
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: yName
+							},
+							ticks: {
+								min: minValue,
+								max: maxValue,
+								stepSize: stepSize
+							}
+						}]
+					}
+				}
+			};
+
+			window.onload = function() {
+				var ctx = document.getElementById('canvas').getContext('2d');
+				window.myLine = new Chart(ctx, config);
+			};
+
+			var pdf = new jsPDF('l', 'pt', [1080, 1920]);
+			
+				 var canvas = pdf.canvas;
+				<!-- canvas.height = 72 * 11; -->
+				 canvas.height = 1080;
+				 canvas.width = 1920;
+				<!-- canvas.width= 72 * 8.5;; -->
+				// var width = 400;
+
+				 html2pdf(document.body, pdf, function(canvas) {
+					  
+				   }
+				 );
+
+			
+			function printPDF() {
+				 var reportPageHeight = $('#reportPage').innerHeight();
+				 var reportPageWidth = $('#reportPage').innerWidth();
+				  console.log('Height' + reportPageHeight)
+				  console.log('Width' + reportPageWidth)
+				  // create a new canvas object that we will populate with all other canvas objects
+				 var pdfCanvas = $('<canvas />').attr({
+					id: "canvaspdf",
+					width: reportPageWidth,
+					height: reportPageHeight
+				 });
+				  
+				  // keep track canvas position
+				 var pdfctx = $(pdfCanvas)[0].getContext('2d');
+				 var pdfctxX = 0;
+				 var pdfctxY = 0;
+				 var buffer = 100;
+				  
+				  // for each chart.js chart
+				 $("canvas").each(function(index) {
+					// get the chart height/width
+					var canvasHeight = $(this).innerHeight();
+					var canvasWidth = $(this).innerWidth();
+					
+					// draw the chart into the new canvas
+					pdfctx.drawImage($(this)[0], pdfctxX, pdfctxY, canvasWidth, canvasHeight);
+					pdfctxX += canvasWidth + buffer;
+					
+					// our report page is in a grid pattern so replicate that in the new canvas
+					if (index % 2 === 1) {
+					  pdfctxX = 0;
+					  pdfctxY += canvasHeight + buffer;
+					}
+				 });
+				 
+				 //var pdfImage = new jsPDF('l', 'pt', [reportPageWidth, reportPageHeight]);
+				 //pdfImage.addImage($(pdfCanvas)[0], 'PNG', 0, 0);
+				 
+				 
+				 
+				 pdf.addImage($(pdfCanvas)[0], 'PNG', 500, 50);
+				 pdf.save('Hello');
+			};
+			
+		</script>
+		<a href="javascript:printPDF()">Download Report</a>
+<h3 class= 'title3' style="margin-left: 5px;">{{warning_message}}</h3>
+</div>
+{% else %}
+<h3 class= 'title3' style="margin-left: 5px;">{{warning_message}}</h3>
+{% endif %}
+
+{% endblock %}

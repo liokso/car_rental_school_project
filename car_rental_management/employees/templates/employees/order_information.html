@@ -1,0 +1,273 @@
+{% extends 'employees/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% load staticfiles %}
+{% block body %}
+<script src="{% static 'js/advance_search.js' %}"></script>
+<script>
+	function create_new_condition() {
+		if (condition_counter < 5) {
+			document.getElementById("btn_advance").disabled = false;
+			var condition_format = [
+				'<div class="form-group" style="padding: 5px;">',
+				'<select class="form-control" name=' + advance_condition_names[condition_counter] + '>',
+				  '<option value="pickupstoreid">pickupstoreid</option>',
+				  '<option value="returnstoreid">returnstoreid</option>',
+				  '<option value="customerid">customerid</option>',
+				  '<option value="vehicleid">vehicleid</option>',
+				'</select>',
+				'&nbsp;<input class="form-control" placeholder="Put your condition here" type="text" name=' + advance_condition_values[condition_counter] + '>&nbsp;',
+				'<select class="form-control" name=' + advance_connection[condition_counter] + '>',
+				  '<option value="And" selected>And</option>',
+				  '<option value="Or">Or</option>',
+				'</select>',
+				'</div><br>'
+			];
+	
+			var html_string = condition_format.join('');
+			
+			var fragment = create(html_string);
+			var parent = document.getElementById("div_advance");
+			parent.appendChild(fragment);
+			condition_counter++;
+		}
+	};
+	
+	$(function () {
+		$('#createdate_start_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+		$('#createdate_end_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+		$('#pickupdate_start_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+		$('#pickupdate_end_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+		$('#returndate_start_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+		$('#returndate_end_datepicker').datepicker({
+			format: "dd/mm/yyyy",
+			autoclose: true,
+			todayHighlight: true,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			autoclose: true,
+			changeMonth: true,
+			changeYear: true,
+			orientation: "button"
+		});
+		
+	});
+	
+</script>
+
+<center>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+
+
+<form class="navbar-form navbar-left" role="search" method="post" action="/employees/order_info" style="width: 100%;">
+{% csrf_token %}
+                <div id="basic_general" class="form-group">
+                    <input type="text" class="form-control" name="search_condition" placeholder="Search all if no conditions">
+					<button type="submit" class="save btn btn-default" name="general_search">Search</button>
+                </div>
+				
+				<!-- Create Date -->
+				<label id="label_date" style="display: none;">Create Date</label>
+				<div id="date_group" class="form-group" style="width:400px; margin-bottom: 10px; display: none; ">
+					Start Date
+					<div class='input-group date' id='createdate_start_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="start_date_create"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+					End Date
+					<div class='input-group date' id='createdate_end_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="end_date_create"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+				</div>
+				
+				<!-- Pickup Date -->
+				<label id="label_date_pickup" style="display: none;">Pickup Date</label>
+				<div id="date_group_pickup" class="form-group" style="width:400px; margin-bottom: 10px; display: none; ">
+					Start Date
+					<div class='input-group date' id='pickupdate_start_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="start_date_pick"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+					End Date
+					<div class='input-group date' id='pickupdate_end_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="end_date_pick"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+				</div>
+				
+				<!-- Return Date -->
+				<label id="label_date_return" style="display: none;">Return Date</label>
+				<div id="date_group_return" class="form-group" style="width:400px; margin-bottom: 10px; display: none; ">
+					Start Date
+					<div class='input-group date' id='returndate_start_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="start_date_return"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+					End Date
+					<div class='input-group date' id='returndate_end_datepicker' style='margin-left: 5px;' >
+						<input type='text' class="form-control" name="end_date_return"/>
+							<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+							</span>
+					</div>
+				</div>
+				
+				<div style="padding-top: 10px; padding-bottom: 5px;" id="div_order">
+					<select class="form-control" name="order_category">
+						<option value="orderid">order id</option>
+						<option value="createdate">create date</option>
+						<option value="pickupdate">pickup date</option>
+						<option value="pickupstoreid">pickup store id</option>
+						<option value="returndate">return date</option>
+						<option value="returnstoreid">return store id</option>
+						<option value="customerid">customer id</option>
+						<option value="vehicleid">vehicle id</option>
+					</select>
+					
+					<select class="form-control" name="order_type">
+						<option value="ascending" selected>ascending</option>
+						<option value="descending">descending</option>
+					</select>
+					
+					<button class="save btn btn-default" type="submit" name="btn_order">Reorder</button>
+					
+				</div>
+				
+				<div id="div_advance" class="form-group" style="width: 100%; display: none;">
+                </div>
+				<button id="btn_advance" type="submit" class="save btn btn-default" name="advance_search" style="display: none;">Search</button>           
+</form>
+<div style="width: 100%;">
+	<div style="margin-left: 15px;">
+		<button id="btn_new_condition" class="btn btn-secondary" onclick="create_new_condition()" style="display: none; float: none;">Create New Condition</button>
+		<button id="btn_clear" class="btn btn-danger" onclick="remove_conditions()" style="display: none; float: none; margin-top: 5px; margin-bottom: 5px;">Clear All Conditions</button>
+	</div>
+	<button class="btn btn-secondary" onclick="hideGeneralSearch();" style="margin-left: 15px;">Switch Search Method</button>
+</div>
+</center>
+
+<div style="width: 100%;">
+{% if orders %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Orders</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">order id</th>
+				<th scope="col">create date</th>
+				<th scope="col">pickup date</th>
+				<th scope="col">pickup store id</th>
+				<th scope="col">return date</th>
+				<th scope="col">return store id</th>
+				<th scope="col">customer id</th>
+				<th scope="col">vehicle id</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for order in orders%}
+			<tr>
+				<td>{{order.orderid}}</td>
+				<td>{{order.createdate}}</td>
+				<td>{{order.pickupdate}}</td>
+				<td>{{order.pickupstoreid.storeid}}</td>
+				<td>{{order.returndate}}</td>
+				<td>{{order.returnstoreid.storeid}}</td>
+				<td>{{order.customerid.customerid}}</td>
+				<td>{{order.vehicleid.vehicleid}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if orders.has_previous %}
+				<a href="?orders=1&stores={{stores.number}}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}&customers={{ customers.number }}">&laquo; first</a>
+				<a href="?orders={{ orders.previous_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+			</span>
+
+			{% if orders.has_next %}
+				<a href="?orders={{ orders.next_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}&customers={{ customers.number }}">next</a>
+				<a href="?orders={{ orders.paginator.num_pages }}&customers={{ customers.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+{%elif msg%}
+{{msg}}
+{% else %}
+No Data Has Found
+{% endif %}
+</div>
+{% endblock %}

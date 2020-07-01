@@ -1,0 +1,299 @@
+{% extends 'employees/base.html' %}
+{% block title %}Main{% endblock %}
+{% load staticfiles %}
+{% block body %}
+<form class="navbar-form navbar-left" role="search" method="post" action="/employees/search_result">
+                <div class="form-group">
+					<input type="hidden" name="search" value="search_test">
+                    <input type="text" class="form-control" name="search_condition">
+                </div>
+				{% csrf_token %}
+                <button type="submit" class="save btn btn-default">Search</button>
+</form><br><br>
+{% if employees %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Employee</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">employee id</th>
+				<th scope="col">employee firstname</th>
+				<th scope="col">employee lastname</th>
+				<th scope="col">employee dob</th>
+				<th scope="col">employee address</th>
+				<th scope="col">employee city</th>
+				<th scope="col">employee state</th>
+				<th scope="col">employee email</th>
+				<th scope="col">employee phonenumber</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for employee in employees%}
+			<tr>
+				<td>{{employee.employeeid}}</td>
+				<td>{{employee.employeefirstname}}</td>
+				<td>{{employee.employeelastname}}</td>
+				<td>{{employee.employeedob}}</td>
+				<td>{{employee.employeeaddress}}</td>
+				<td>{{employee.employeecityid.cityname}}</td>
+				<td>{{employee.employeecityid.citystate}}</td>
+				<td>{{employee.employeeemail}}</td>
+				<td>{{employee.employeephonenumber}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+	
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if employees.has_previous %}
+				<a href="?employees=1&customers={{ customers.number }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}">&laquo; first</a>
+				<a href="?employees={{ employees.previous_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ employees.number }} of {{ employees.paginator.num_pages }}.
+			</span>
+
+			{% if employees.has_next %}
+				<a href="?employees={{ employees.next_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}">next</a>
+				<a href="?employees={{ employees.paginator.num_pages }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+	
+{% endif %}
+
+{% if cars %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Car</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">vehicle id</th>
+				<th scope="col">makename</th>
+				<th scope="col">model</th>
+				<th scope="col">series</th>
+				<th scope="col">seriesyear</th>
+				<th scope="col">pricenew</th>
+				<th scope="col">enginesize</th>
+				<th scope="col">fuelsystem</th>
+				<th scope="col">tankcapacity</th>
+				<th scope="col">power</th>
+				<th scope="col">seatingcapacity</th>
+				<th scope="col">standardtransmission</th>
+				<th scope="col">bodytype</th>
+				<th scope="col">wheeldrive</th>
+				<th scope="col">wheelbase</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for car in cars%}
+			<tr>
+				<td>{{car.vehicleid}}</td>
+				<td>{{car.makename}}</td>
+				<td>{{car.model}}</td>
+				<td>{{car.series}}</td>
+				<td>{{car.seriesyear}}</td>
+				<td>{{car.pricenew}}</td>
+				<td>{{car.enginesize}}</td>
+				<td>{{car.fuelsystem}}</td>
+				<td>{{car.tankcapacity}}</td>
+				<td>{{car.power}}</td>
+				<td>{{car.seatingcapacity}}</td>
+				<td>{{car.standardtransmission}}</td>
+				<td>{{car.bodytype}}</td>
+				<td>{{car.wheeldrive}}</td>
+				<td>{{car.wheelbase}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+	
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if cars.has_previous %}
+				<a href="?cars=1&customers={{ customers.number }}&orders={{ orders.number }}&stores={{stores.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?cars={{ cars.previous_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ cars.number }} of {{ cars.paginator.num_pages }}.
+			</span>
+
+			{% if cars.has_next %}
+				<a href="?cars={{ cars.next_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">next</a>
+				<a href="?cars={{ cars.paginator.num_pages }}&orders={{ orders.number }}&customers={{ customers.number }}&stores={{stores.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+	
+{% endif %}
+
+{% if stores %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Store</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">store id</th>
+				<th scope="col">store name</th>
+				<th scope="col">store address</th>
+				<th scope="col">store phonenumber</th>
+				<th scope="col">store city</th>
+				<th scope="col">store state</th>
+
+			</tr>
+		</thead>
+		<tbody>
+	{% for store in stores%}
+			<tr>
+				<td>{{store.storeid}}</td>
+				<td>{{store.storename}}</td>
+				<td>{{store.storeaddress}}</td>
+				<td>{{store.storephonenumber}}</td>
+				<td>{{store.storecityid.cityname}}</td>
+				<td>{{store.storecityid.citystate}}</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+	
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if stores.has_previous %}
+				<a href="?stores=1&customers={{ customers.number }}&orders={{ orders.number }}&cars={{cars.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?stores={{ stores.previous_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ stores.number }} of {{ stores.paginator.num_pages }}.
+			</span>
+
+			{% if stores.has_next %}
+				<a href="?stores={{ stores.next_page_number }}&orders={{ orders.number }}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}">next</a>
+				<a href="?stores={{ stores.paginator.num_pages }}&orders={{ orders.number }}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+	
+{% endif %}
+
+{% if customers %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Customer</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">customer id</th>
+				<th scope="col">customer firstname</th>
+				<th scope="col">customer lastname</th>
+				<th scope="col">customer dob</th>
+				<th scope="col">customer address</th>
+				<th scope="col">customer occupation</th>
+				<th scope="col">customer gender</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for customer in customers%}
+			<tr>
+				<td>{{customer.customerid}}</td>
+				<td>{{customer.customerfirstname}}</td>
+				<td>{{customer.customerlastname}}</td>
+				<td>{{customer.customerdob}}</td>
+				<td>{{customer.customeraddress}}</td>
+				<td>{{customer.customeroccupation}}</td>
+				<td>{{customer.customergender}}
+				<!-- {% if customer.customergender == 'M'%} -->
+				<!-- Male -->
+				<!-- {% elif customer.customergender == 'F' %} -->
+				<!-- Female -->
+				<!-- {% endif %} -->
+				</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+	
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if customers.has_previous %}
+				<a href="?customers=1&stores={{stores.number}}&orders={{ orders.number }}&cars={{cars.number}}&employees={{employees.number}}">&laquo; first</a>
+				<a href="?customers={{ customers.previous_page_number }}&orders={{ orders.number }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ customers.number }} of {{ customers.paginator.num_pages }}.
+			</span>
+
+			{% if customers.has_next %}
+				<a href="?customers={{ customers.next_page_number }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">next</a>
+				<a href="?customers={{ customers.paginator.num_pages }}&orders={{ orders.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+	
+{% endif %}
+
+{% if orders %}
+	<!-- <div class="container"> -->
+		<h3 style="margin-left: 5px;">Orders</h3>
+	<!-- </div> -->
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">order id</th>
+				<th scope="col">create date</th>
+				<th scope="col">pickup date</th>
+				<th scope="col">pickup store id</th>
+				<th scope="col">return date</th>
+				<th scope="col">return store id</th>
+				<th scope="col">customer id</th>
+				<th scope="col">vehicle id</th>
+			</tr>
+		</thead>
+		<tbody>
+	{% for order in orders%}
+			<tr>
+				<td>{{order.orderid}}</td>
+				<td>{{order.createdate}}</td>
+				<td>{{order.pickupdate}}</td>
+				<td>{{order.pickupstoreid.storeid}}</td>
+				<td>{{order.returndate}}</td>
+				<td>{{order.returnstoreid.storeid}}</td>
+				<td>{{order.customerid.customerid}}</td>
+				<td>{{order.vehicleid.vehicleid}}</td>
+			</tr>           
+	{% endfor %}
+		</tbody>
+	</table>
+	
+	<div class="pagination">
+		<span class="step-links pagination">
+			{% if orders.has_previous %}
+				<a href="?orders=1&stores={{stores.number}}&customers={{ customers.number }}&cars={{cars.number}}&employees={{employees.number}}&customers={{ customers.number }}">&laquo; first</a>
+				<a href="?orders={{ orders.previous_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">previous</a>
+			{% endif %}
+
+			<span class="current">
+				Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+			</span>
+
+			{% if orders.has_next %}
+				<a href="?orders={{ orders.next_page_number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}&customers={{ customers.number }}">next</a>
+				<a href="?orders={{ orders.paginator.num_pages }}&customers={{ customers.number }}&customers={{ customers.number }}&stores={{stores.number}}&cars={{cars.number}}&employees={{employees.number}}">last &raquo;</a>
+			{% endif %}
+		</span>
+	</div>
+	
+{% endif %}
+
+{% if not orders and not customers and not stores and not cars and not employees %}
+No Data Has Found
+{% endif %}
+
+{% endblock%}

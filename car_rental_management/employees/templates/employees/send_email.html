@@ -1,0 +1,65 @@
+{% extends 'employees/base.html' %}
+{% block body %}
+<center>
+    <div style="margin-left:50px; margin-top:0px">
+        <div style="width:1000px; height:600px; margin-left:-650px; margin-top:30px">
+        <div style="margin-left:-284px; margin-top:10px">
+            <label>Your Email address is: {{ user.employeeemail }} </label>
+        </div>
+
+        <div style="margin-left:0px; margin-top:10px">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div style="margin-left:-336px; margin-top:10px">
+                    Subject: &nbsp {{ form.subject }}
+                </div>
+                <div style="margin-left:0px; margin-top:10px">
+                    {{ form.message }}
+                </div>
+
+                <div style="margin-left:-310px; margin-top:17px">
+                    <input type="file" class="form-control-file" name="uploadfile" />
+                </div>
+
+                <div style="margin-left:700px; margin-top:30px">
+                    <button type="submit" class="btn btn-primary">Send Email</button><br>
+                    <div style="margin-left:0px; margin-top:10px">
+                        <font color="red">{{ error }}</font>
+                    </div>
+
+                </div>
+
+        </div>
+    </div>
+
+    <div style="width:100px; height:100px; margin-left:120px; margin-top:-350px">
+        <font size="4">Send to</font>
+    </div>
+
+
+    <div style="margin-left:600px; margin-top:-304px">
+        <p>
+        <div style="margin-left:-210px; margin-top:0px"><label for="userBox">Addressee:</label></div>
+        <div style="width:300px; height:400px; overflow:scroll;">
+            <table style="width:30%" class="table table-hover">
+                <caption>Only verified email will be listed</caption>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                {% for user in userChoice %}
+                    <tr>
+                        <td><input type="checkbox" name="userBox" value={{user.employeeemail}} />{{user.employeeusername}}</td>
+                        <td>{{user.employeeemail}}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+        </div>
+        <br>
+        </p>
+    </div>
+        </form>
+    </div>
+</center>
+
+{% endblock %}

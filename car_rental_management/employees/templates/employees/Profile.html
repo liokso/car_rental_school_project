@@ -1,0 +1,25 @@
+{% extends 'employees/base.html' %}
+{% block body %}
+<div style="width:1200px;height:600px;background-color:White;">
+    <div style="margin-left:550px; margin-top:30px">
+        <h2>My Profile</h2>
+    </div>
+    <div style="margin-left:475px; margin-top:40px">
+        <ul style="font-size:21px">
+            <li>Email: {{ employee.employeeemail }} </li>
+            <li>First Name: {{ employee.employeefirstname }} </li>
+            <li>Last Name: {{ employee.employeelastname }} </li>
+            <li>Telephone: {{ employee.employeephonenumber }} </li>
+            <li>State: {{ employee.employeecityid.citystate }} </li>
+            <li>City: {{ employee.employeecityid.cityname }} </li>
+            <li>Address: {{ employee.employeeaddress }} </li>
+        </ul>
+    </div>
+    <div style="margin-left:550px; margin-top:60px">
+        <a href="/employees/update_profile" style="font-size:21px">Edit Profile</a>
+    </div>
+
+</div>
+
+
+{% endblock %}

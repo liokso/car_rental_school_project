@@ -1,0 +1,50 @@
+{% load static %}<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Default Title{% endblock %}</title>
+    {% block stylesheet %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      ...
+    </header>
+    <main>
+      <form class="navbar-form navbar-left" role="search" method="post">
+                <div class="form-group">
+					<input type="hidden" name="ajax" value="ajax_test">
+                    <input id="id_ajax" type="text" class="form-control" name="search_condition">
+                </div>
+				{% csrf_token %}
+                <button type="submit" class="save btn btn-default">Search</button>
+      </form>
+	  <p id="p1">GOg</p>
+    </main>
+    <footer>
+      ...
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script>
+    $("#id_ajax").change(function () {
+      //console.log( $(this).val() );
+	  var username = $(this).val();
+	  
+	  $.ajax({
+        url: 'ajax/validate_conditoin',
+        data: {
+          'username': username
+        },
+        dataType: 'html',
+        success: function (data) {
+          //if (data.is_taken) {
+          //  alert("A user with this username already exists.");
+		//	document.getElementById("p1").innerHTML = JSON.stringify(data);
+        //  }
+		  alert("A user with this username already exists.");
+		  document.getElementById("p1").innerHTML = data;
+        }
+      });
+    });
+  </script>
+  </body>
+</html>

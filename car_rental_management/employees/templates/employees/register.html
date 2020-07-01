@@ -1,0 +1,38 @@
+{% extends 'employees/base.html' %}
+{% block body %}
+{% if request.session.user_access_level > 4 %}
+<div style="width:1000px;height:600px;background-color:White;">
+    <div style="margin-left:560px; margin-top:35px">
+        <h3>Employee Sign Up</h3>
+    </div>
+    <div style="margin-left:560px; margin-top:35px">
+        {% if error %}
+		<span style="color:red;">{{ error }}</span>
+        {% endif %}
+    </div>
+
+    <div style="margin-left:480px; margin-top:30px">
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                <br>
+                <br>
+            </p>
+        {% endfor %}
+        <div style="margin-left:150px; margin-top:10px">
+            <button type="submit" class="btn btn-primary">Sign up</button>
+        </div>
+    </form>
+        <br>
+    </div>
+</div>
+{% else %}
+Ban
+{% endif %}
+{% endblock %}
